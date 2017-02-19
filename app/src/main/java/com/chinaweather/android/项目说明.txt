@@ -1,0 +1,36 @@
+项目说明：
+    db目录存放数据库模型相关的代码；
+    gson存放GSON模型相关的代码；
+    service包用于存放服务相关的代码；
+    util包用于存放工具相关的代码。
+
+数据库的存储：
+    第一阶段我们要做的就是创建好数据库和表， 这样从服务器获取到的数据才能够存储到本地。这里使用LitePal来管理应用的数据库。
+首先， 添加依赖。如下：
+    compile 'org.litepal.android:core:1.3.2'  --------LitePal数据库管理
+    compile 'com.squareup.okhttp3:okhttp:3.4.1' ----------网络请求
+    compile 'com.google.code.gson:gson:2.7'         -----------GSON
+    compile 'com.github.bumptech.glide:glide:3.7.0' -----------用于加载和展示图片
+
+数据库设计：
+    1、计划创建三张表， 分别为province / city / county , 分别对应实体类中的Province , City , County
+数据库使用Litepal进行管理， 因此所有的实体类都必须继承Litepal中的DataSupport类。
+    2、配置litepal.xml文件。右击app/src/main目录--new -- Directory -- ， 创建一个assets目录， 然后
+在assets目录下再新建一个litepal.xml文件，且编辑,如下内容:
+<litepal>
+    <dbname value="china_weather" />
+    <version value="1" />
+    <list>
+        <mapping class="com.chinaweather.android.db.Province" />
+        <mapping class="com.chinaweather.android.db.City" />
+        <mapping class="com.chinaweather.android.db.County" />
+    </list>
+</litepal>
+这里指明数据库名为china_weather , 数据库的版本是1 ， 并将Province，City，County三个实体添加到映射列表中。
+    3、最后配置LitePalApplication ， 修改AndroidManifest.xml中的代码如下：
+    <application
+            android:name="org.litepal.LitePalApplication"
+            android:allowBackup="true"
+            android:icon="@mipmap/psb"
+            ……
+    这样数据库和表都创建完成了， 数据库和表会在首次执行任意数据库操作的时候自动创建。

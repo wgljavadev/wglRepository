@@ -1,0 +1,14 @@
+<litepal>
+    <dbname value="china_weather" />
+    <version value="1" />
+    <list>
+        <mapping class="com.chinaweather.android.db.Province" />
+        <mapping class="com.chinaweather.android.db.City" />
+        <mapping class="com.chinaweather.android.db.County" />
+    </list>
+</litepal>
+
+<!--
+    这里指明数据库名为china_weather , 数据库的版本是1 ， 并将
+    Province，City，County三个实体添加到映射列表中。
+-->
