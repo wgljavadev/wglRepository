@@ -1,2 +1,2 @@
 # wglRepository
-这是一个Android项目， 在学习Android的一个Demo。 
+此项目是Android学习过程中， 一个综合实战的一个项目。
