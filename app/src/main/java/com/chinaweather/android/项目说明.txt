@@ -34,3 +34,77 @@
             android:icon="@mipmap/psb"
             ……
     这样数据库和表都创建完成了， 数据库和表会在首次执行任意数据库操作的时候自动创建。
+
+工具类的实现：
+    一些工具类的实现， 如发起网络请求的工具类，  服务器返回结果的解析工具类。
+
+
+布局功能：
+    由于遍历省市县功能，我们在后面会复用， 因此这就不写在活动中， 而是卸载碎片里， 这样需要复用的时候直接在布局里
+引用碎片就可以了。
+    1、在res/layout目录中新建choose_area.xml布局。内容如下:
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="#fff"
+                android:textSize="20sp"/>
+            <Button
+                android:id="@+id/back_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/back"/>
+        </RelativeLayout>
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    以上布局文件首先定义了一个头布局标题栏， 然后在布局中放置了TextView用于显示标题内容， button用于返回上一个活动。
+之所以使用自己的标题栏， 是因为碎片中最好不要直接使用ActionBar或Toolbar， 不然在复用的时候会出现想不到的结果。
+    接下来在ListView中用于显示省市县的数据，之所以使用ListView而不是RecyclerView是因为其会自动给每个子项之
+间加一条分割线， 而使用RecyclerView则比较麻烦。
+
+编写碎片：
+    编写用于遍历省市县数据的碎片了，新建ChooseAreaFragment继承Fragement。
+    1.当点击某个省的时候， 就会进入到ListView的onItemClick()方法中， 这个时候就会根据当前的级别来判断是去掉用
+    queryCityies（）方法还是queryCounties()方法。
+    2.以上写好的碎片是不能在直接在界面上显示的， 因此我们需要把它添加到活动里才可以。 修改acitivity_main.xml
+如下：
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <fragment
+            android:id="@+id/choose_area_fragement"
+            android:name="com.chinaweather.android.ChooseAreaFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    布局文件很简单 ， 只是定义了一个FrameLayout ， 然后把ChooseAreaFragment碎片添加进来， 并让它沾满整个
+布局。另外在碎片的布局中，我们已经定义了一个标题栏， 因此就不再需要原生的ActionBar， 修改res/values/styles.xml
+如下：
+    <resources>
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+            ...
+        </style>
+    </resources>
+    因为访问网络需要权限， 因此需要在AndroidManifest.xml中进行如下权限声明， 如下：
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    
