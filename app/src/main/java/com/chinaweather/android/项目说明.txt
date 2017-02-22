@@ -106,5 +106,138 @@
     因为访问网络需要权限， 因此需要在AndroidManifest.xml中进行如下权限声明， 如下：
     <uses-permission android:name="android.permission.INTERNET" />
 
+到此， APP可以实现省市县三级联动了。 接下来开始查询天气。
+
+显示天气信息：
+    1、根据返回的JSON串， 创建GSON实体对象。
+    2、编辑天气界面：
+        首先创建一个显示天气信息的活动。由于所有的天气信息都在同一个界面显示， 因此， 新建活动的布局文件将
+是一个很长的布局文件。为了方便维护， 将界面的不同部分写在不同的布局文件里。再通过引入布局的方式集成到
+activity_weather.xml中。
+    2.1 先新建一个title.xml作为头布局（res/layout --> New --> Layout resource file）， 如下：
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:id="@+id/title_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#fff"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/title_update_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+    2.2 再新建一个now.xml作为当前的天气信息的布局， 如下：
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp">
+        <TextView
+            android:id="@+id/degree_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="#fff"
+            android:textSize="60sp"/>
+        <TextView
+            android:id="@+id/weather_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="#fff"
+            android:textSize="20sp"/>
+    </LinearLayout>
+    2.3 新建一个forecast.xml作为未来天气信息的布局， 如下代码：
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="#8000">
+    <!--
+        最外层LinearLayout定义了一个半透明的背景，
+        TextView用于定义标题，
+        最里层的LinearLayout定义一个用于显示未来几天天气信息的布局， 这个布局没有任何内容， 因为这要根据
+        服务器返回的数据在代码中动态添加的。
+    -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:text="预报"
+            android:textColor="#fff"
+            android:textSize="20sp"/>
+        <LinearLayout
+            android:id="@+id/forecast_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+    </LinearLayout>
+
+    2.4 最里层的LinearLayout定义一个用于显示未来几天天气信息的布局， 这个布局没有任何内容， 因为这要根据
+服务器返回的数据在代码中动态添加的, 因此，我们还需要再定义一个未来天气的子布局， 创建forecast_item.xml文件，
+如下：
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_margin="15dp">
+    <!--
+        子布局中有4个TextView ， 分别用于显示天气日期， 天气概况， 当天的最高气温，最低气温。
+    -->
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:textColor="#fff"
+            />
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#fff"/>
+        <TextView
+            android:id="@+id/max_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#fff"/>
+        <TextView
+            android:id="@+id/min_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#fff"
+            />
+    </LinearLayout>
+    2.5 然后新建一个aqi.xml用于空气质量信息的布局， 具体见代码（因太长，省略掉）：
+    2.6 新建suggestion.xml用于生活建议信息的布局， 具体见代码布局。
+    3、将天气界面上的每个布局文件引入到主活动布局文件activity_weather.xml中
+
+
+
 
     

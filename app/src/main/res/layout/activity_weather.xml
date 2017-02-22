@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    >
+
+    <ScrollView
+        android:id="@+id/weather_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/title" />
+            <include layout="@layout/now" />
+            <include layout="@layout/forecast" />
+            <include layout="@layout/aqi" />
+            <include layout="@layout/suggestion" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
+<!--
+    最外成是一个FrameLayout， 并将它的背景颜色设置为colorPrimary ， 然后在其中嵌套一个ScrollView，
+    这是因为天气界面中的内容比较多， 使用ScrollView可以允许我们通过滚动的方式查看屏幕以外的内容。
+
+    因为ScrollView中只允许一个子布局， 因此里面嵌套了一个LinearLayout， 然后在LinearLayout中逐个将
+    布局文件引入。
+-->
